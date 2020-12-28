@@ -16,10 +16,14 @@
 
 package io.grpc.examples.helloworld
 
+import com.google.rpc.BadRequest
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
+import io.grpc.Status
+import io.grpc.StatusException
 import io.grpc.examples.helloworld.grpc_stub.GreeterGrpcKt
 import io.grpc.examples.helloworld.grpc_stub.HelloRequest
+import io.grpc.protobuf.ProtoUtils
 import java.io.Closeable
 import java.util.concurrent.TimeUnit
 
@@ -28,8 +32,18 @@ class HelloWorldClient(private val channel: ManagedChannel) : Closeable {
 
     suspend fun greet(name: String) {
         val request = HelloRequest.newBuilder().setName(name).build()
-        val response = stub.sayHello(request)
-        println("Received: ${response.message}")
+        try {
+            val response = stub.sayHello(request)
+            println("Received: ${response.message}")
+        } catch (e: StatusException) {
+            if (e.status == Status.INVALID_ARGUMENT) {
+                val badReqErrDetail = e.trailers[ProtoUtils.keyForProto(BadRequest.getDefaultInstance())]
+                badReqErrDetail?.fieldViolationsList?.forEach {
+                    println("error occurred at ${it.field}")
+                    println("error description: ${it.description}")
+                }
+            }
+        }
     }
 
     override fun close() {
