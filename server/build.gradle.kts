@@ -13,6 +13,16 @@ dependencies {
     runtimeOnly("io.grpc:grpc-netty:${rootProject.ext["grpcVersion"]}")
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir("src/main/grpc-stub/java")
+            srcDir("src/main/grpc-stub/kotlin")
+        }
+    }
+}
+
+
 tasks.register<JavaExec>("HelloWorldServer") {
     dependsOn("classes")
     classpath = sourceSets["main"].runtimeClasspath

@@ -46,43 +46,35 @@ protobuf {
 }
 
 tasks.register("copyStubToClient") {
-    delete (fileTree("../client/src/main/java") {
-        include("io/grpc/examples/helloworld/grpc_stub/**")
-    })
-    delete (fileTree("../client/src/main/kotlin") {
-        include("io/grpc/examples/helloworld/grpc_stub/**")
-    })
+    delete (fileTree("../client/src/main/grpc-stub/java"))
+    delete (fileTree("../client/src/main/grpc-stub/kotlin"))
     copy {
         from("./build/generated/source/proto/main/grpc")
-        into("../client/src/main/java")
+        into("../client/src/main/grpc-stub/java")
     }
     copy {
         from("./build/generated/source/proto/main/grpckt")
-        into("../client/src/main/kotlin")
+        into("../client/src/main/grpc-stub/kotlin")
     }
     copy {
         from("./build/generated/source/proto/main/java")
-        into("../client/src/main/java")
+        into("../client/src/main/grpc-stub/java")
     }
 }
 
 tasks.register("copyStubToServer") {
-    delete (fileTree("../server/src/main/java") {
-        include("io/grpc/examples/helloworld/grpc_stub/**")
-    })
-    delete (fileTree("../server/src/main/kotlin") {
-        include("io/grpc/examples/helloworld/grpc_stub/**")
-    })
+    delete (fileTree("../server/src/main/grpc-stub/java"))
+    delete (fileTree("../server/src/main/grpc-stub/kotlin"))
     copy {
         from("./build/generated/source/proto/main/grpc")
-        into("../server/src/main/java")
+        into("../server/src/main/grpc-stub/java")
     }
     copy {
         from("./build/generated/source/proto/main/grpckt")
-        into("../server/src/main/kotlin")
+        into("../server/src/main/grpc-stub/kotlin")
     }
     copy {
         from("./build/generated/source/proto/main/java")
-        into("../server/src/main/java")
+        into("../server/src/main/grpc-stub/java")
     }
 }
