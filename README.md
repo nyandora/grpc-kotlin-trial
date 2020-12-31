@@ -45,3 +45,13 @@ so that client codes and server codes can use stub codes immediately.
 This example does not select this convenience because in actual scenes 
 we generate stub codes and then copy to client project or/and server project. 
 
+## The trial elements inside this repository.
+### Error Handling
+
+This repository follows ["Error Model"](https://cloud.google.com/apis/design/errors) guided by Google.
+
+Specifically, when the server application gets a validation error, 
+the application responses `INVALID_ARGUMENT` status code 
+with `com.google.rpc.BadRequest` message for describing error information.
+
+Then the client application extract this message from a caught exception.
