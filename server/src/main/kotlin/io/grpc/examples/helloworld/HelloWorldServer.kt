@@ -61,16 +61,12 @@ class HelloWorldServer(private val port: Int) {
 
         private fun validate(request: HelloRequest) {
             if (request.name.length >= 10) {
-                val nameFieldError = BadRequest
-                        .FieldViolation.newBuilder()
+                val nameFieldError = BadRequest.FieldViolation.newBuilder()
                         .setField("name")
-                        .setDescription("More than 10 characters are not allowed.")
-                        .build()
+                        .setDescription("More than 10 characters are not allowed.").build()
 
-                val badRequestError = BadRequest
-                        .newBuilder()
-                        .addFieldViolations(nameFieldError)
-                        .build()
+                val badRequestError = BadRequest.newBuilder()
+                        .addFieldViolations(nameFieldError).build()
 
                 val errorDetail = Metadata()
                 errorDetail.put(ProtoUtils.keyForProto(badRequestError), badRequestError)
@@ -78,7 +74,6 @@ class HelloWorldServer(private val port: Int) {
                 throw StatusException(Status.INVALID_ARGUMENT, errorDetail)
             }
         }
-
     }
 }
 
